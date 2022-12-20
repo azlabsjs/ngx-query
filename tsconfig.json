@@ -2,6 +2,12 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "@azlabsjs/ngx-query": [
+        "dist/azlabsjs/ngx-query/azlabsjs-ngx-query",
+        "dist/azlabsjs/ngx-query"
+      ]
+    },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
