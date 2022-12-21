@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { InjectionToken, inject } from '@angular/core';
 import { QueryClientType, createQueryManager } from '@azlabsjs/rx-query';
-import { HTTPRequestMethods, RequestsConfig } from './http';
+import { HTTPClientType, HTTPRequestMethods, RequestsConfig } from './http';
 import { QueryManagerType } from './types';
 
 export const HTTP_HOST = new InjectionToken<string>(
@@ -15,6 +15,10 @@ export const REQUEST_ACTIONS = new InjectionToken<RequestsConfig>(
 export const HTTP_QUERY_CLIENT = new InjectionToken<
   QueryClientType<HTTPRequestMethods>
 >('HTTP Query client injected type');
+
+export const HTTP_CLIENT = new InjectionToken<HTTPClientType>(
+  'HTTP client injected type'
+);
 
 export const WINDOW = new InjectionToken<Window>('Platform View Object', {
   providedIn: 'root',

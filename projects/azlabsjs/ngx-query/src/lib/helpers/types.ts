@@ -6,7 +6,6 @@ import {
     QueryProviderType,
     QueryType,
 } from '@azlabsjs/rx-query';
-import { ObservableInput } from 'rxjs';
 import { HTTPRequestMethods } from '../http';
 import { ObserveKeyType } from '../types';
 
@@ -21,7 +20,7 @@ export type QueryTypeLeastArgumentType<F> = F extends QueryType
 
 export type QueryStateLeastParameters<F> = F extends (
   ...args: infer A
-) => ObservableInput<unknown>
+) => any
   ? [...A, FnActionArgumentLeastType] | [...A]
   : F extends QueryProviderType
   ? [...QueryProviderProvidesParamType<Parameters<F['query']>, F>]

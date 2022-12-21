@@ -30,6 +30,7 @@ export class ServiceLocator {
   private static instance: () => Injector;
 
   /**
+   * Set the global angular inject
    *
    * @param injector
    */
@@ -40,10 +41,14 @@ export class ServiceLocator {
   }
 
   /**
-   * Returns the global injector
+   * Returns the angular global injector or undefined when running in testing environment
+   * or module not initialized properly using QueryModule.forRoot()
    */
-  static getInstance() {
-    return ServiceLocator.instance();
+  private static getInstance() {
+    return typeof ServiceLocator.instance !== 'undefined' &&
+      ServiceLocator.instance !== null
+      ? ServiceLocator.instance()
+      : undefined;
   }
 
   /**
@@ -52,6 +57,10 @@ export class ServiceLocator {
    * @param token
    */
   static get<T>(token: ProviderToken<T> | InjectionToken<T>, _default?: T) {
-    return ServiceLocator.getInstance().get<T>(token, _default);
+    const instance = ServiceLocator.getInstance();
+    if (typeof instance === 'undefined' || instance === null) {
+      return _default;
+    }
+    return instance.get<T>(token, _default);
   }
 }

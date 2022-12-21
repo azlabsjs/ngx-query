@@ -9,6 +9,38 @@ export type QueryConfigParamsType = {
   path: string;
 };
 
+/**
+ * @internal
+ *
+ * Type definition of an HTTP client
+ */
+export type HTTPClientType = {
+  request<T = any>(
+    method: string,
+    url: string,
+    options: {
+      body?: unknown;
+      responseType: 'arraybuffer' | 'blob' | 'json' | 'text';
+      headers?:
+        | Record<string, unknown>
+        | {
+            [header: string]: string | string[];
+          };
+      params?:
+        | Record<string, unknown>
+        | {
+            [param: string]:
+              | string
+              | number
+              | boolean
+              | ReadonlyArray<string | number | boolean>;
+          };
+      withCredentials?: boolean;
+      observe?: 'response' | 'body' | 'request';
+    }
+  ): Observable<T>;
+};
+
 export type HTTPRequestMethods =
   | 'GET'
   | 'DELETE'

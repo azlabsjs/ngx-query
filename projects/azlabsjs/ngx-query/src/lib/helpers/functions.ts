@@ -1,20 +1,30 @@
 import {
-    BaseQueryType,
-    QueryProviderType,
-    QueryState,
-    QueryType, apiResponse, apiResponseBody
+  BaseQueryType,
+  QueryProviderType,
+  QueryState,
+  QueryType,
+  apiResponse,
+  apiResponseBody,
+  useQueryManager,
 } from '@azlabsjs/rx-query';
 import {
-    Observable,
-    OperatorFunction,
-    first,
-    isObservable,
-    map,
-    of,
+  Observable,
+  OperatorFunction,
+  first,
+  isObservable,
+  map,
+  of,
+  from,
+  tap,
 } from 'rxjs';
 import { HTTPRequestMethods } from '../http';
 import { ObserveKeyType } from '../types';
-import { createQueryCreator, parseQueryArguments } from './internal';
+import {
+  createDefaultInvokeFunc,
+  createQueryClientInvokeFunc,
+  createQueryCreator,
+  parseQueryArguments,
+} from './internal';
 import { CacheQueryProviderType, QueryStateLeastParameters } from './types';
 
 type UseQueryReturnType<T> = T extends QueryProviderType<any>
@@ -34,14 +44,23 @@ export const useQuery = <T, TResponse = unknown>(
 ) => {
   const [_query, _arguments, observe] = parseQueryArguments(params, args);
   let _observe = observe as unknown;
-  const result = createQueryCreator()(_query as any, ..._arguments);
+
+  // In case the createQueryCreator() call return an undefined instance, we fallback to global
+  // instance of the query manager
+  const queryClient = createQueryCreator();
+  const queryFunc =
+    typeof queryClient === 'undefined' || queryClient === null
+      ? createDefaultInvokeFunc(useQueryManager())
+      : createQueryClientInvokeFunc(queryClient);
+  // The we invoke the provided query
+  const result = queryFunc(_query as any, ..._arguments);
   const _params = params as unknown;
   if (typeof (_params as CacheQueryProviderType).query === 'function') {
     _observe =
       observe ?? (_params as CacheQueryProviderType).cacheConfig.observe;
   }
   return (
-    (!isObservable(result) ? of(result) : result) as Observable<QueryState>
+    (!isObservable(result) ? of(result) : from(result)) as Observable<QueryState>
   ).pipe(
     _observe === 'response'
       ? apiResponse<TResponse>()

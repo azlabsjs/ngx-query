@@ -16,7 +16,7 @@ import { QueryManagerType } from './types';
 export class QueryProvider
   implements CommandInterface<unknown>, QueryManager<Observable<QueryState>>
 {
-  // Creates an instance of { @see NgHTTPClientClient }
+  // Creates an instance of { @see QueryProvider }
   constructor(
     @Inject(PLATFORM_ID) @Optional() private platformId: Object,
     @Inject(QUERY_MANAGER) private readonly query: QueryManagerType

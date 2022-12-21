@@ -1,4 +1,4 @@
-import { Provider } from '@angular/core';
+import { Provider, Type } from '@angular/core';
 import {
   CacheQueryConfig,
   CommandInterface,
@@ -8,7 +8,7 @@ import {
   QueryState,
 } from '@azlabsjs/rx-query';
 import { Observable, ObservableInput } from 'rxjs';
-import { RequestInterface } from './http';
+import { HTTPClientType, RequestInterface } from './http';
 
 /**
  * @internal
@@ -30,6 +30,7 @@ export type QueryArguments<F> = F extends (
  * @internal
  */
 export type HostStringParamType = {
+  httpClient: Type<HTTPClientType>;
   host?: string;
 };
 
@@ -37,6 +38,7 @@ export type HostStringParamType = {
  * @internal
  */
 export type HostProviderParamType = {
+  httpClient: Type<HTTPClientType>;
   hostProvider?: Provider;
 };
 
