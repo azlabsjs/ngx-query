@@ -13,7 +13,7 @@ import { HTTPClientType, RequestInterface } from './http';
 /**
  * @internal
  */
-export type ObserveKeyType = 'request' | 'response' | 'body' | undefined;
+export type ObserveKeyType = 'query' | 'response' | 'body';
 
 /**
  * @internal

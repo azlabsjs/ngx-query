@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { interval, lastValueFrom, Observable, of, take, tap } from 'rxjs';
-import { useQuery } from './helpers';
+import { QueryState, queryIsLoading } from '@azlabsjs/rx-query';
+import { Observable, interval, lastValueFrom, of, take, tap } from 'rxjs';
+import { as, useQuery } from './helpers';
 import { DefaultQueryClient } from './query-client';
 import { TestQueryStateProvider } from './testing/test-query-state.stub';
 import { HTTP_CLIENT, HTTP_QUERY_CLIENT } from './token';
@@ -56,21 +57,29 @@ describe('useQuery Test', () => {
   });
 
   it('should invoke the query function and cache the query result', async () => {
-    const query$ = useQuery(
-      (name: string, lastname: string) => {
-        return of({ name, lastname });
-      },
-      'Sidoine',
-      'Azandrew',
-      {
-        name: 'test_query_cache_key',
-        cacheQuery: true,
-      }
+    const query$ = as<Observable<QueryState>>(
+      useQuery(
+        (name: string, lastname: string) => {
+          return of({ name, lastname });
+        },
+        'Sidoine',
+        'Azandrew',
+        {
+          name: 'test_query_cache_key',
+          cacheQuery: true,
+        }
+      )
     );
     query$
       .pipe(
-        tap(() => {
-          // console.log(value);
+        tap((value) => {
+          if (queryIsLoading(value)) {
+            expect(value.pending).toEqual(true);
+            expect(value.response).toBeUndefined();
+          } else {
+            expect((value.response as any)?.name).toEqual('Sidoine');
+            expect((value.response as any)?.lastname).toEqual('Azandrew');
+          }
         })
       )
       .subscribe();
@@ -79,13 +88,20 @@ describe('useQuery Test', () => {
   });
 
   it('should call the query provider query method and cache the result', async () => {
-    const query$ = useQuery(new TestQueryStateProvider(), '/api/v1/posts', {
-      post_id: 20,
-    });
+    const query$ = as<
+      Observable<{ path: string; params: Record<string, any> }>
+    >(
+      useQuery(new TestQueryStateProvider(), '/api/v1/posts', {
+        post_id: 20,
+      })
+    );
     query$
       .pipe(
-        tap(() => {
-          // console.log('Query response:', value);
+        tap((value) => {
+          expect(value?.path).toEqual('/api/v1/posts');
+          expect(value?.params).toEqual({
+            post_id: 20,
+          });
         })
       )
       .subscribe();

@@ -26,7 +26,7 @@
     "@angular-devkit/build-angular": "^13.3.10",
     "@angular/cli": "^13.3.10",
     "@angular/compiler-cli": "^13.3.0",
-    "@azlabsjs/rx-query": "^0.1.2",
+    "@azlabsjs/rx-query": "^0.1.6",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "jasmine-core": "~4.0.0",
@@ -37,5 +37,12 @@
     "karma-jasmine-html-reporter": "~1.7.0",
     "ng-packagr": "^13.0.0",
     "typescript": "~4.6.2"
+  },
+  "publishConfig": {
+      "registry": "https://npm.pkg.github.com/@azlabsjs"
+  },
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/azlabsjs/ngx-query.git"
   }
 }

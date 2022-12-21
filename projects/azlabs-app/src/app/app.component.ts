@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { useQuery } from '@azlabsjs/ngx-query';
-import { of, tap } from 'rxjs';
+import { from, tap } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,14 @@ import { of, tap } from 'rxjs';
 export class AppComponent {
   state$ = useQuery(
     (name: string, lastname: string) => {
-      return of({ name, lastname });
+      return from(
+        new Promise((resolve) => {
+          const timeout = setTimeout(() => {
+            resolve({ name, lastname });
+            clearTimeout(timeout);
+          }, 3000);
+        })
+      );
     },
     'Azandrew',
     'Sidoine',
