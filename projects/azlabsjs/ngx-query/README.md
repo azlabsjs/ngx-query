@@ -1,24 +1,143 @@
-# NgxQuery
+# Rx Query State
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.0.
+## Usage
 
-## Code scaffolding
+The Query state library provides as most of angular library a module that exposes the API to the end users. Therefore in the root of your angular project add the following:
 
-Run `ng generate component component-name --project ngx-query` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-query`.
-> Note: Don't forget to add `--project ngx-query` or else it will be added to the default project in your `angular.json` file. 
+```ts
+// app.module.ts
 
-## Build
+// Imports the angular library
+import { HTTPQueryModule } from "@azlabsjs/ngx-query";
+// Import the core library
+import { HTTP_HOST } from "@azlabsjs/rx-query";
 
-Run `ng build ngx-query` to build the project. The build artifacts will be stored in the `dist/` directory.
+@NgModule({
+  imports: [
+    // ... 
+    HTTPQueryModule.forRoot({
+      hostProvider: {
+        provide: HTTP_HOST,
+        useFactory: () => {
+          // Return the HTTP_HOST url to be used as base URL
+        },
+        deps: [],
+      },
+    }),
+  ]
+})
+export class AppModule {}
+```
 
-## Publishing
+### How to perform query
 
-After building your library with `ng build ngx-query`, go to the dist folder `cd dist/ngx-query` and run `npm publish`.
+There are various way to perform query. You either use an angular service, a Javascript function or pass a set of predefined query parameters to a functional interface.
 
-## Running unit tests
+* Using query parameters
 
-Run `ng test ngx-query` to execute the unit tests via [Karma](https://karma-runner.github.io).
+When using query parameters, a default query provider, based on Angular HTTP client library, is internally used by the module.
 
-## Further help
+```ts
+import { useQuery } from "@azlabsjs/ngx-query";
+import { QueryType } from '@azlabsjs/rx-query';
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+export class TestComponent {
+  state$ = useQuery<QueryType>(
+    {
+      path: "api/v1/customers",
+      method: "GET",
+      observe: "request",
+      // provider: this.httpClient
+    },
+    true
+  );
+}
+```
+
+**Note** Customized query path
+  Instead of manually specifying the query method, we must sometimes pass a query  string `METHOD_path[/:param1][/path2/:param2]` along with required parameters as `parameters` to the request object and the query library will internally resolve and build the query path along with the method before sending the request.
+
+```ts
+import { useQuery } from "@azlabsjs/ngx-query";
+import { QueryType } from '@azlabsjs/rx-query';
+
+@Component({
+  // ...
+})
+export class TestComponent {
+  state$ = useQuery<QueryType>(
+    {
+      // This resolves in an HTTP request:
+      // /GET api/v1/posts/1032/users/2
+      path: "get_api/v1/posts:post_id/users:user_id",
+      observe: "request",
+      params: {
+        user_id: 2,
+        post_id: 1032,
+      },
+    },
+    true
+  );
+}
+```
+
+* Using angular services
+
+Sometimes, to have control on the query developper might like to provides his/her custom query logic. Therefore the library come with support for decoupled service for performing queries:
+
+```ts
+// query-state.service.ts
+import { HttpClient } from "@angular/common/http";
+import { Inject, Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { environment } from "src/environments/environment";
+import { QueryProviderType } from "@azlabsjs/rx-query";
+import { ProvidesQuery } from "@azlabsjs/ngx-query";
+import { getHttpHost, isValidHttpUrl } from "./helpers";
+
+@Injectable()
+@ProvidesQuery({
+  observe: 'body'
+})
+export class TestQueryStateProvider
+  implements
+    QueryProviderType<[string, Record<string, any> | [string, string]]>
+{
+  constructor(
+    private httpClient: HttpClient,
+  ) {}
+
+  query(path: string, params?: Record<string, any>) {
+    const host = environment.api.host;
+    return this.httpClient.get(
+      isValidHttpUrl(path)
+        ? path
+        : `${host ? getHttpHost(host) : host}/${path ?? ""}`,
+      { params }
+    ) as Observable<Object>;
+  }
+}
+
+```
+
+**Note** Query State services must implements `QueryProviderType` interface and defines the query method that is internally called by tge library.
+
+```ts
+import { Component } from '@angular/core';
+import { useQuery } from "@azlabsjs/ngx-query";
+import { TestQueryStateProvider } from './query-state.service.ts'
+
+@Component({
+  selector: "app-query-state",
+  template: ` <pre *ngIf="state$ | async as state">{{ state | json }}</pre> `,
+  providers: [TestQueryStateProvider],
+})
+export class QueryStateComponent {
+  state$ = useQuery(this.queryProvider, "api/v1/customers").pipe(
+    tap(console.log)
+  );
+
+  constructor(private queryProvider: TestQueryStateProvider) {}
+}
+
+```
