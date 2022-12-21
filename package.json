@@ -1,6 +1,6 @@
 {
   "name": "@azlabsjs/ngx-query",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -39,10 +39,10 @@
     "typescript": "~4.6.2"
   },
   "publishConfig": {
-      "registry": "https://npm.pkg.github.com/@azlabsjs"
+    "registry": "https://npm.pkg.github.com/@azlabsjs"
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/azlabsjs/ngx-query.git"
+    "type": "git",
+    "url": "https://github.com/azlabsjs/ngx-query.git"
   }
 }
