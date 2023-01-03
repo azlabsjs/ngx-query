@@ -1,10 +1,10 @@
 import {
-    CacheQueryConfig,
-    FnActionArgumentLeastType,
-    ObservableInputFunction,
-    QueryParameter,
-    QueryProviderType,
-    QueryType,
+  CacheQueryConfig,
+  FnActionArgumentLeastType,
+  ObservableInputFunction,
+  QueryParameter,
+  QueryProviderType,
+  QueryType
 } from '@azlabsjs/rx-query';
 import { HTTPRequestMethods } from '../http';
 import { ObserveKeyType } from '../types';
