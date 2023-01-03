@@ -1,9 +1,9 @@
 {
   "name": "@azlabsjs/ngx-query",
-  "version": "0.1.5",
+  "version": "0.13.5",
   "peerDependencies": {
-    "@angular/common": "^13.3.0",
-    "@angular/core": "^13.3.0",
+    "@angular/common": "^13.3",
+    "@angular/core": "^13.3",
     "rxjs": "^7.5.0",
     "@azlabsjs/rx-query": "^0.1.2"
   },
