@@ -1,11 +1,11 @@
 {
   "name": "@azlabsjs/ngx-query",
-  "version": "0.14.2",
+  "version": "0.14.3",
   "peerDependencies": {
     "@angular/common": "^14.2",
     "@angular/core": "^14.2",
     "rxjs": "^7.5.0",
-    "@azlabsjs/rx-query": "^0.1.2"
+    "@azlabsjs/rx-query": "^0.2.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
