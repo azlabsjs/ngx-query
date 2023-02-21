@@ -26,7 +26,7 @@
     "@angular-devkit/build-angular": "^13.3.10",
     "@angular/cli": "^13.3.10",
     "@angular/compiler-cli": "^13.3.0",
-    "@azlabsjs/rx-query": "^0.1.6",
+    "@azlabsjs/rx-query": "^0.2.0",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "jasmine-core": "~4.0.0",
