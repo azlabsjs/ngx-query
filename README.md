@@ -16,13 +16,7 @@ import { HTTP_HOST } from "@azlabsjs/rx-query";
   imports: [
     // ... 
     HTTPQueryModule.forRoot({
-      hostProvider: {
-        provide: HTTP_HOST,
-        useFactory: () => {
-          // Return the HTTP_HOST url to be used as base URL
-        },
-        deps: [],
-      },
+      //..
     }),
   ]
 })
