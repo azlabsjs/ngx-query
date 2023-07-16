@@ -5,21 +5,21 @@
   "projects": {
     "@azlabsjs/ngx-query": {
       "projectType": "library",
-      "root": "projects/azlabsjs/ngx-query",
-      "sourceRoot": "projects/azlabsjs/ngx-query/src",
+      "root": "projects/ngx-query",
+      "sourceRoot": "projects/ngx-query/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/azlabsjs/ngx-query/ng-package.json"
+            "project": "projects/ngx-query/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/azlabsjs/ngx-query/tsconfig.lib.prod.json"
+              "tsConfig": "projects/ngx-query/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/azlabsjs/ngx-query/tsconfig.lib.json"
+              "tsConfig": "projects/ngx-query/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -27,9 +27,9 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/azlabsjs/ngx-query/src/test.ts",
-            "tsConfig": "projects/azlabsjs/ngx-query/tsconfig.spec.json",
-            "karmaConfig": "projects/azlabsjs/ngx-query/karma.conf.js"
+            "main": "projects/ngx-query/src/test.ts",
+            "tsConfig": "projects/ngx-query/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-query/karma.conf.js"
           }
         }
       }
