@@ -20,7 +20,7 @@ export type QueryTypeLeastArgumentType<F> = F extends QueryType
 
 export type QueryStateLeastParameters<F> = F extends (
   ...args: infer A
-) => any
+) => unknown
   ? [...A, FnActionArgumentLeastType] | [...A]
   : F extends QueryProviderType
   ? [...QueryProviderProvidesParamType<Parameters<F['query']>, F>]

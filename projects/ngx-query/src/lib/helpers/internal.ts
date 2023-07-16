@@ -1,5 +1,6 @@
 import {
   QueryArguments,
+  QueryClientType,
   QueryParameter,
   QueryType,
   useQueryManager,
@@ -19,7 +20,8 @@ import { CacheQueryProviderType, QueryStateLeastParameters } from './types';
  *
  */
 export const createQueryCreator = () => {
-  const service = ServiceLocator.get(HTTP_QUERY_CLIENT);
+  const service =
+    ServiceLocator.get<QueryClientType<HTTPRequestMethods>>(HTTP_QUERY_CLIENT);
   // We Bind the invoke query to the resolved service
   // for references to this to point to the service itself
   return service?.invoke.bind(service);
@@ -81,7 +83,7 @@ export function parseQueryArguments<T>(
         : 'request'
     ) as ObserveKeyType;
   } else if (typeof params === 'function') {
-    _query = _params as any as T;
+    _query = _params as T;
     _arguments = _args;
   }
   return [_query, _arguments, observe] as [
@@ -99,6 +101,7 @@ export function parseQueryArguments<T>(
 export function createQueryClientInvokeFunc(
   instance: ReturnType<typeof createQueryCreator>
 ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return <TFunc extends (...args: any) => any>(
     query: QueryType<HTTPRequestMethods, ObserveKeyType> | TFunc,
     ...args: [...QueryArguments<TFunc>]
@@ -119,6 +122,7 @@ export function createQueryClientInvokeFunc(
 export function createDefaultInvokeFunc(
   instance: ReturnType<typeof useQueryManager>
 ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return <TFunc extends (...args: any) => any>(
     query: QueryType<HTTPRequestMethods, ObserveKeyType> | TFunc,
     ...args: [...QueryArguments<TFunc>]

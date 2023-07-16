@@ -15,7 +15,7 @@ export type QueryConfigParamsType = {
  * Type definition of an HTTP client
  */
 export type HTTPClientType = {
-  request<T = any>(
+  request<T = unknown>(
     method: string,
     url: string,
     options: {
@@ -76,11 +76,11 @@ export type RequestInterface<TMethod extends string = string> = {
   path?: string;
   method?: TMethod;
   body?: unknown;
-  params?: Record<string, any>;
+  params?: Record<string, unknown>;
   options?: {
     headers?: [string, string][] | Record<string, string>;
     responseType?: ResponseType;
-    params?: Record<string, any> | { [header: string]: string | string[] };
+    params?: Record<string, unknown> | { [header: string]: string | string[] };
     withCredentials?: boolean;
   };
 };
@@ -92,10 +92,10 @@ export type RESTQueryFunc<T> = (
   options?: {
     headers?: [string, string][] | Record<string, string>;
     responseType?: ResponseType;
-    params?: Record<string, any> | { [header: string]: string | string[] };
+    params?: Record<string, unknown> | { [header: string]: string | string[] };
     withCredentials?: boolean;
   }
-) => ObservableInput<T> | any;
+) => ObservableInput<T> | unknown;
 
 export type RestHTTPClient = QueryClientType<HTTPRequestMethods> & {
   /**
@@ -109,7 +109,7 @@ export type RestHTTPClient = QueryClientType<HTTPRequestMethods> & {
     options?: {
       headers?: [string, string][] | Record<string, string>;
       responseType?: ResponseType;
-      params?: Record<string, any> | { [header: string]: string | string[] };
+      params?: Record<string, unknown> | { [header: string]: string | string[] };
       withCredentials?: boolean;
       cache?: boolean | CacheQueryConfig;
     }
@@ -128,7 +128,7 @@ export type RestHTTPClient = QueryClientType<HTTPRequestMethods> & {
     options?: {
       headers?: [string, string][] | Record<string, string>;
       responseType?: ResponseType;
-      params?: Record<string, any> | { [header: string]: string | string[] };
+      params?: Record<string, unknown> | { [header: string]: string | string[] };
       withCredentials?: boolean;
       cache?: boolean | CacheQueryConfig;
     }
@@ -147,7 +147,7 @@ export type RestHTTPClient = QueryClientType<HTTPRequestMethods> & {
     options?: {
       headers?: [string, string][] | Record<string, string>;
       responseType?: ResponseType;
-      params?: Record<string, any> | { [header: string]: string | string[] };
+      params?: Record<string, unknown> | { [header: string]: string | string[] };
       withCredentials?: boolean;
       cache?: boolean | CacheQueryConfig;
     }
@@ -166,7 +166,7 @@ export type RestHTTPClient = QueryClientType<HTTPRequestMethods> & {
     options?: {
       headers?: [string, string][] | Record<string, string>;
       responseType?: ResponseType;
-      params?: Record<string, any> | { [header: string]: string | string[] };
+      params?: Record<string, unknown> | { [header: string]: string | string[] };
       withCredentials?: boolean;
       cache?: boolean | CacheQueryConfig;
     }
@@ -183,7 +183,7 @@ export type RestHTTPClient = QueryClientType<HTTPRequestMethods> & {
     options?: {
       headers?: [string, string][] | Record<string, string>;
       responseType?: ResponseType;
-      params?: Record<string, any> | { [header: string]: string | string[] };
+      params?: Record<string, unknown> | { [header: string]: string | string[] };
       withCredentials?: boolean;
       cache?: boolean | CacheQueryConfig;
     }

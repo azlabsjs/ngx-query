@@ -7,9 +7,7 @@ import {
 import { DefaultQueryClient } from './query-client';
 import { ServiceLocator } from './service-locator';
 import { HTTP_CLIENT, HTTP_QUERY_CLIENT } from './token';
-import {
-  ModuleParamType,
-} from './types';
+import { ModuleParamType } from './types';
 
 @NgModule({
   imports: [],
@@ -34,7 +32,7 @@ export class QueryModule {
           provide: APP_INITIALIZER,
           useFactory: (injector: Injector) => {
             return () => {
-              ServiceLocator.setInstance(injector);
+              ServiceLocator.setInstance(() => injector);
             };
           },
           deps: [Injector],

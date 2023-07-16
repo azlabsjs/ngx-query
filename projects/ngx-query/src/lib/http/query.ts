@@ -13,7 +13,7 @@ export function buildQueryPath(
   name: string,
   method: string,
   path?: string,
-  params?: Record<string, any>,
+  params?: Record<string, unknown>,
   config?: RequestsConfig
 ) {
   if (path === null || typeof path === 'undefined') {
@@ -53,11 +53,16 @@ export function useHTTPActionQuery<T>(
   config?: RequestsConfig
 ) {
   return () => {
-    let { name, payload } = {
+    const _action: Omit<Action<RequestInterface>, 'payload'> & {
+      payload: RequestInterface;
+    } = {
       ...action,
       payload: (action as Action<RequestInterface>).payload ?? {},
     };
-    let { params, options, method, body } = payload;
+    const { payload } = _action;
+    let name = _action.name;
+    const { params, options, body } = payload;
+    let method = payload?.method;
     // We remove any `[` `]` from the starts and the end of the name string
     // to avoid any issue when parsing the name
     name = name.startsWith('[') ? name.substring(1) : name;
@@ -69,15 +74,17 @@ export function useHTTPActionQuery<T>(
       path =
         typeof config.actions[name] === 'string'
           ? (config.actions[name] as string)
-          : (config.actions[name] as QueryConfigParamsType)!.path;
+          : (config.actions[name] as QueryConfigParamsType)?.path;
       method =
         method ??
         (typeof config.actions[name] === 'string'
           ? 'GET'
-          : (config.actions[name] as QueryConfigParamsType)!.method ?? 'GET');
+          : (config.actions[name] as QueryConfigParamsType)?.method ?? 'GET');
     }
-    method =
-      method ?? name.match(/^POST|PUT|PATCH|GET|DELETE|OPTIONS|HEAD/i)![0];
+    if (!method) {
+      const matches = name.match(/^POST|PUT|PATCH|GET|DELETE|OPTIONS|HEAD/i);
+      method = matches ? matches[0] : method;
+    }
     if (method === null || typeof method === 'undefined') {
       throw new Error(
         'Request action name must be of type [method_endpoint:param1:param2]'
@@ -97,7 +104,7 @@ export function useHTTPActionQuery<T>(
         Accept: 'application/json',
       },
       responseType: options?.responseType ?? 'json',
-      params: options?.params || new Object(),
+      params: options?.params ?? {},
     });
   };
 }

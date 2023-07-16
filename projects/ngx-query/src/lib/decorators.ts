@@ -32,7 +32,7 @@ export const QueryState = <T>(
  *
  * @returns
  */
-export const QueryDispatch = <T>() => {
+export const QueryDispatch = () => {
   return <TargetType>(target: TargetType, propertyKey: string) => {
     Object.defineProperty(target, propertyKey, {
       value: useQuery.bind(target),
@@ -48,6 +48,7 @@ export const QueryDispatch = <T>() => {
 export function ProvidesQuery(
   cacheConfig?: (CacheQueryConfig & { observe?: ObserveKeyType }) | boolean
 ) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return <T extends new (...args: any[]) => QueryProviderType>(
     constructor: T
   ) => {

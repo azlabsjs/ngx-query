@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { QueryState, queryIsLoading } from '@azlabsjs/rx-query';
 import { Observable, interval, lastValueFrom, of, take, tap } from 'rxjs';
-import { as, useQuery } from './helpers';
+import { observableReturnType, useQuery } from './helpers';
 import { DefaultQueryClient } from './query-client';
 import { TestQueryStateProvider } from './testing/test-query-state.stub';
 import { HTTP_CLIENT, HTTP_QUERY_CLIENT } from './token';
@@ -37,7 +37,7 @@ describe('useQuery Test', () => {
                   withCredentials?: boolean;
                   observe?: 'response' | 'body' | 'request';
                 }
-              ): Observable<any> {
+              ): Observable<Record<string, unknown>> {
                 return of({
                   method,
                   url,
@@ -57,7 +57,7 @@ describe('useQuery Test', () => {
   });
 
   it('should invoke the query function and cache the query result', async () => {
-    const query$ = as<Observable<QueryState>>(
+    const query$ = observableReturnType<QueryState>(
       useQuery(
         (name: string, lastname: string) => {
           return of({ name, lastname });
@@ -77,7 +77,9 @@ describe('useQuery Test', () => {
             expect(value.pending).toEqual(true);
             expect(value.response).toBeUndefined();
           } else {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             expect((value.response as any)?.name).toEqual('Sidoine');
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             expect((value.response as any)?.lastname).toEqual('Azandrew');
           }
         })
@@ -88,9 +90,10 @@ describe('useQuery Test', () => {
   });
 
   it('should call the query provider query method and cache the result', async () => {
-    const query$ = as<
-      Observable<{ path: string; params: Record<string, any> }>
-    >(
+    const query$ = observableReturnType<{
+      path: string;
+      params: Record<string, unknown>;
+    }>(
       useQuery(new TestQueryStateProvider(), '/api/v1/posts', {
         post_id: 20,
       })

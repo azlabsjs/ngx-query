@@ -8,9 +8,9 @@ import { ProvidesQuery } from '../decorators';
 })
 export class TestQueryStateProvider
   implements
-    QueryProviderType<[string, Record<string, any> | [string, string]]>
+    QueryProviderType<[string, Record<string, unknown>]>
 {
-  query(path: string, params?: Record<string, any>) {
+  query(path: string, params?: Record<string, unknown>) {
     return of({ path, params });
   }
 }

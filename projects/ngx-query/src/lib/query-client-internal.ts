@@ -18,6 +18,17 @@ import {
 import { ObserveKeyType, QueryArguments } from './types';
 
 /**
+ * @Internal
+ */
+function hasCacheProperties(arg: Record<string, unknown>): boolean {
+  return (
+    arg !== null &&
+    arg['cacheTime'] !== null &&
+    typeof arg['cacheTime'] !== 'undefined'
+  );
+}
+
+/**
  * @internal
  *
  * Creates a query function using an HTTP client for sending query
@@ -36,7 +47,7 @@ export function useHTTPRequestHandler<T = unknown>(
           headers?: [string, string][] | Record<string, string> | undefined;
           responseType?: Exclude<ResponseType, 'document'> | undefined;
           params?:
-            | Record<string, any>
+            | Record<string, unknown>
             | { [header: string]: string | string[] };
           withCredentials?: boolean;
         }
@@ -109,6 +120,7 @@ export function createQueryCacheName(query: {
  * @internal
  * Creates the query function that is invoked by the query manager class
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createQueryFunc<TFunc extends (...args: any) => any>(
   query: QueryType<HTTPRequestMethods, ObserveKeyType> | TFunc,
   client?: HTTPClientType,
@@ -133,15 +145,18 @@ export function createQueryFunc<TFunc extends (...args: any) => any>(
             },
           },
         } as Action<RequestInterface>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ) as (...args: any) => any)
-    : (query as (...args: any) => any);
+    : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (query as (...args: any) => any);
 }
 
 /**
  * @internal
  * Resolves the query argument list based on query provided type
  */
-export function resolveQueryArguments<TFunc extends (...args: any) => any>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function resolveQueryArguments<TFunc extends (...args: any) => unknown>(
   query: QueryType<HTTPRequestMethods, ObserveKeyType> | TFunc,
   ...args: [...QueryArguments<TFunc>]
 ) {
@@ -150,9 +165,7 @@ export function resolveQueryArguments<TFunc extends (...args: any) => any>(
     Array.isArray(args) &&
     (typeof args[0] === 'boolean' ||
       (typeof args[0] === 'object' &&
-        args[0] !== null &&
-        args[0].cacheTime !== null &&
-        typeof args[0].cacheTime! == 'undefined'))
+        hasCacheProperties(args[0] as Record<string, unknown>)))
   ) {
     // Here we expect the first item of arguments list to be cache config
     args[0] =

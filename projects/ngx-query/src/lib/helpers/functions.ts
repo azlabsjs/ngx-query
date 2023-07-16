@@ -45,6 +45,7 @@ export const useQuery = <T>(
       ? createDefaultInvokeFunc(useQueryManager())
       : createQueryClientInvokeFunc(queryClient);
   // The we invoke the provided query
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const result = queryFunc(_query as any, ..._arguments);
   const _params = params as unknown;
   if (typeof (_params as CacheQueryProviderType).query === 'function') {
@@ -61,7 +62,7 @@ export const useQuery = <T>(
       : ((_observe === 'body'
           ? queryResultBody()
           : map((state) => state)) as OperatorFunction<QueryState, unknown>)
-  ) as Observable<any>;
+  ) as Observable<unknown>;
 };
 
 /**
@@ -139,8 +140,19 @@ export function useHTTPDeleteQuery<TResponse>(
  * value = as<String>(value);
  * ```
  */
-export function as<T>(value: any) {
+export function as<T>(value: unknown) {
   return value as T;
+}
+
+/**
+ * @description Provides developpers with a function for
+ * observables type interence
+ * 
+ * @param value 
+ * @returns 
+ */
+export function observableReturnType<T>(value: unknown) {
+  return value as Observable<T>;
 }
 
 /**

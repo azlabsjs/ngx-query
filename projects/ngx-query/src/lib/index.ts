@@ -4,7 +4,8 @@ export {
   QueryTypeLeastArgumentType,
   as,
   returnType,
-  useQuery
+  useQuery,
+  observableReturnType
 } from './helpers';
 export { QueryProvider } from './query';
 export { DefaultQueryClient } from './query-client';

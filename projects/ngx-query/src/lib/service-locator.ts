@@ -1,43 +1,25 @@
-import { InjectionToken, Injector } from '@angular/core';
-
-/**
- * { @see https://angular.io/api/core/Type }
- */
-export declare interface Type<T> extends Function {
-  new (...args: any[]): T;
+type FunctionType<T = void> = () => T;
+type InjectorType = {
+  get<T>(token: unknown, notFoundValue: unknown): T;
+};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isPureFunction<T>(obj: any): obj is FunctionType<T> {
+  return !!(obj.constructor && obj.call && obj.apply);
 }
-
-/**
- * { @see https://angular.io/api/core/AbstractType }
- * @description
- *
- * Represents an abstract class `T`, if applied to a concrete class it would stop being
- * instantiable.
- *
- * @publicApi
- */
-export declare interface AbstractType<T> extends Function {
-  prototype: T;
-}
-
-/**
- * @internal
- */
-type ProviderToken<T> = Type<T> | AbstractType<T>;
 
 export class ServiceLocator {
   // injector instance
-  private static instance: () => Injector;
+  private static instance: () => InjectorType;
 
   /**
    * Set the global angular inject
    *
    * @param injector
    */
-  static setInstance(injector: Injector) {
-    ServiceLocator.instance = () => {
-      return injector;
-    };
+  static setInstance(injector: InjectorType | FunctionType<InjectorType>) {
+    ServiceLocator.instance = isPureFunction<InjectorType>(injector)
+      ? injector
+      : () => injector;
   }
 
   /**
@@ -56,7 +38,7 @@ export class ServiceLocator {
    *
    * @param token
    */
-  static get<T>(token: ProviderToken<T> | InjectionToken<T>, _default?: T) {
+  static get<T>(token: unknown, _default?: T) {
     const instance = ServiceLocator.getInstance();
     if (typeof instance === 'undefined' || instance === null) {
       return _default;
