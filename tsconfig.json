@@ -4,7 +4,6 @@
   "compilerOptions": {
     "paths": {
       "@azlabsjs/ngx-query": [
-        "dist/ngx-query/azlabsjs-ngx-query",
         "dist/ngx-query"
       ]
     },
