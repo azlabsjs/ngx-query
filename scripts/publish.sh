@@ -9,9 +9,7 @@ done
 arg=$1
 version=($(echo ${arg:=patch}))
 cwd=($(pwd))
-current_dir="${cwd}/projects/ngx-query"
 
-echo $current_dir
-cd "$current_dir"
 tag=$(npm version $version)
 git commit -a -m "version $tag release"
+git push origin && git push origin $tag

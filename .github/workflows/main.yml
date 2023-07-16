@@ -32,6 +32,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      - run: cd dist/azlabsjs/ngx-query && npm publish --access public
+      - run: cd dist/ngx-query && npm publish --access public
     env:
       NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
