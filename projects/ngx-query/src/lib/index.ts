@@ -16,5 +16,12 @@ export {
   HTTP_QUERY_CLIENT,
   QUERY_MANAGER
 } from './token';
+
 export { ObserveKeyType } from './types';
 
+export {
+  RESTQueryFunc,
+  RequestsConfig,
+  ResponseType,
+  HTTPClientType
+} from './http';
