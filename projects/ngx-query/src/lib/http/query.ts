@@ -45,6 +45,7 @@ export function buildQueryPath(
 }
 
 /**
+ * @internal
  * Creates a query function using the action definitions
  */
 export function useHTTPActionQuery<T>(

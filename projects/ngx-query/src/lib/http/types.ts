@@ -85,6 +85,9 @@ export type RequestInterface<TMethod extends string = string> = {
   };
 };
 
+/**
+ * REST query function type definition
+ */
 export type RESTQueryFunc<T> = (
   path: string,
   method: string,
@@ -97,6 +100,9 @@ export type RESTQueryFunc<T> = (
   }
 ) => ObservableInput<T> | unknown;
 
+/**
+ * @deprecated
+ */
 export type RestHTTPClient = QueryClientType<HTTPRequestMethods> & {
   /**
    * Sends an HTTP request to the backend server using the /GET HTTP verb
