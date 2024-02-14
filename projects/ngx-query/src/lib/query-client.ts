@@ -1,11 +1,14 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Inject, Injectable, Optional, PLATFORM_ID, OnDestroy } from '@angular/core';
-import { QueryClientType, QueryType } from '@azlabsjs/rx-query';
-import { HTTPRequestMethods, HTTP_HOST, HTTPClientType } from './http';
 import {
-  createQueryFunc,
-  resolveQueryArguments,
-} from './query-client-internal';
+  Inject,
+  Injectable,
+  Optional,
+  PLATFORM_ID,
+  OnDestroy,
+} from '@angular/core';
+import { QueryClientType, QueryType, useQueryManager } from '@azlabsjs/rx-query';
+import { HTTPRequestMethods, HTTP_HOST, HTTPClientType } from './http';
+import { createQueryFunc, resolveQueryArguments } from './internal';
 import { HTTP_CLIENT, QUERY_MANAGER } from './token';
 import { ObserveKeyType, QueryArguments, QueryManagerType } from './types';
 
@@ -15,13 +18,18 @@ import { ObserveKeyType, QueryArguments, QueryManagerType } from './types';
 export class DefaultQueryClient
   implements QueryClientType<HTTPRequestMethods>, OnDestroy
 {
+  private readonly query!: QueryManagerType;
   // Creates an instance of { @see DefaultQueryClient }
   constructor(
-    @Inject(QUERY_MANAGER) private readonly query: QueryManagerType,
-    @Inject(HTTP_CLIENT) private client: HTTPClientType,
+    @Inject(QUERY_MANAGER)
+    @Optional()
+    query?: QueryManagerType,
+    @Inject(HTTP_CLIENT) @Optional() private client?: HTTPClientType,
     @Inject(PLATFORM_ID) @Optional() private platformId?: ObjectConstructor,
     @Inject(HTTP_HOST) @Optional() private host?: string
-  ) {}
+  ) {
+    this.query = query ?? useQueryManager();
+  }
 
   // Handles HTTP requests
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

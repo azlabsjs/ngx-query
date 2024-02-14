@@ -2,9 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { QueryState, queryIsLoading } from '@azlabsjs/rx-query';
 import { Observable, interval, lastValueFrom, of, take, tap } from 'rxjs';
 import { observableReturnType, useQuery } from './helpers';
-import { DefaultQueryClient } from './query-client';
 import { TestQueryStateProvider } from './testing/test-query-state.stub';
-import { HTTP_CLIENT, HTTP_QUERY_CLIENT } from './token';
+import { HTTP_CLIENT } from './token';
+import { provideQueryClient } from './providers';
 
 describe('useQuery Test', () => {
   beforeEach(async () => {
@@ -47,10 +47,7 @@ describe('useQuery Test', () => {
             };
           },
         },
-        {
-          provide: HTTP_QUERY_CLIENT,
-          useClass: DefaultQueryClient,
-        },
+        provideQueryClient(),
       ],
     }).compileComponents();
     // service = TestBed.inject(InMemoryStorage);

@@ -9,7 +9,7 @@ import { HTTPRequestMethods } from '../http';
 import {
   createQueryFunc,
   resolveQueryArguments,
-} from '../query-client-internal';
+} from '../internal';
 import { ServiceLocator } from '../service-locator';
 import { HTTP_QUERY_CLIENT } from '../token';
 import { ObserveKeyType } from '../types';
@@ -128,7 +128,7 @@ export function createDefaultInvokeFunc(
     ...args: [...QueryArguments<TFunc>]
   ) => {
     console.warn(
-      'Using fallback query client instead of angular query client service. Please configure your angular to use the query client service by importing HTTPQueryModule.forRoot(...) at the root of your application'
+      'Using fallback query client instead of angular query client service. Please configure your angular to use the query client service by importing HTTPQueryModule.forRoot(...) or provideInitializers() for project running angular >=15  at the root of your application'
     );
     return instance(
       createQueryFunc<TFunc>(query),

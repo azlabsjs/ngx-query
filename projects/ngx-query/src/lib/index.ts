@@ -5,7 +5,7 @@ export {
   as,
   returnType,
   useQuery,
-  observableReturnType
+  observableReturnType,
 } from './helpers';
 export { QueryProvider } from './query';
 export { DefaultQueryClient } from './query-client';
@@ -14,7 +14,7 @@ export {
   HTTP_CLIENT,
   HTTP_HOST,
   HTTP_QUERY_CLIENT,
-  QUERY_MANAGER
+  QUERY_MANAGER,
 } from './token';
 
 export { ObserveKeyType } from './types';
@@ -23,5 +23,11 @@ export {
   RESTQueryFunc,
   RequestsConfig,
   ResponseType,
-  HTTPClientType
+  HTTPClientType,
 } from './http';
+
+export {
+  provideHttpClient,
+  provideInitializers,
+  provideQueryClient,
+} from './providers';

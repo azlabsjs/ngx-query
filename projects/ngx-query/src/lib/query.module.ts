@@ -13,6 +13,26 @@ import { ModuleParamType } from './types';
   imports: [],
 })
 export class QueryModule {
+
+  /**
+   * @deprecated For application running angular version 15 or above,
+   * use provided providers to register global service in your project:
+   * 
+   * ```ts
+   * 
+   * @NgModule({
+   *    providers: [
+   *        // ...
+   *        provideHttpClient(HttpClient),
+   *        provideQueryClient(),
+   *        provideInitializers()
+   *    ]
+   * })
+   * export class AppModule {}
+   * 
+   * ```
+   * 
+   */
   static forRoot(value: ModuleParamType): ModuleWithProviders<QueryModule> {
     return {
       ngModule: QueryModule,

@@ -34,7 +34,7 @@ export const WINDOW = new InjectionToken<Window>('Platform View Object', {
 });
 
 export const QUERY_MANAGER = new InjectionToken<QueryManagerType>(
-  'Query manager singleton for Angular application',
+  'Query manager singleton for angular application',
   {
     providedIn: 'root',
     factory: () => {

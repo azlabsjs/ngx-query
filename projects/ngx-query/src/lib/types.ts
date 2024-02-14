@@ -1,7 +1,6 @@
 import { Provider, Type } from '@angular/core';
 import {
   CacheQueryConfig,
-  CommandInterface,
   Disposable,
   FnActionArgumentLeastType,
   QueryManager,
@@ -52,6 +51,5 @@ export type ModuleParamType = HostStringParamType | HostProviderParamType;
  *
  * @internal
  */
-export type QueryManagerType = CommandInterface<unknown> &
-  QueryManager<Observable<QueryState>> &
+export type QueryManagerType = QueryManager<Observable<QueryState>> &
   Disposable;
