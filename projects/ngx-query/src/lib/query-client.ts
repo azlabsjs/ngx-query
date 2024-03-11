@@ -6,7 +6,11 @@ import {
   PLATFORM_ID,
   OnDestroy,
 } from '@angular/core';
-import { QueryClientType, QueryType, useQueryManager } from '@azlabsjs/rx-query';
+import {
+  QueryClientType,
+  QueryType,
+  useQueryManager,
+} from '@azlabsjs/rx-query';
 import { HTTPRequestMethods, HTTP_HOST, HTTPClientType } from './http';
 import { createQueryFunc, resolveQueryArguments } from './internal';
 import { HTTP_CLIENT, QUERY_MANAGER } from './token';
@@ -28,7 +32,7 @@ export class DefaultQueryClient
     @Inject(PLATFORM_ID) @Optional() private platformId?: ObjectConstructor,
     @Inject(HTTP_HOST) @Optional() private host?: string
   ) {
-    this.query = query ?? useQueryManager();
+    this.query = query ?? (useQueryManager() as unknown as QueryManagerType);
   }
 
   // Handles HTTP requests

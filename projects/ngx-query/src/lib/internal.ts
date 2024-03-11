@@ -182,7 +182,6 @@ export function resolveQueryArguments<TFunc extends (...args: any) => unknown>(
               query.path ?? ''
             }[${createQueryCacheName(query)}]`,
           } as CacheQueryConfig);
-    // useHTTPActionQuery
   }
   return args;
 }

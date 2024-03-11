@@ -46,7 +46,7 @@ export const useQuery = <T>(
       : createQueryClientInvokeFunc(queryClient);
   // The we invoke the provided query
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const result = queryFunc(_query as any, ..._arguments);
+  const result = queryFunc(_query as any, ...(_arguments ?? []));
   const _params = params as unknown;
   if (typeof (_params as CacheQueryProviderType).query === 'function') {
     _observe =
